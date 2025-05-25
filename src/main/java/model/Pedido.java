@@ -2,17 +2,17 @@ package model;
 import java.util.ArrayList;
 
 public class Pedido {
-    private Long id;
     private ArrayList<Producto> listProduct;
 
     public Pedido() {
+        listProduct = new ArrayList<>();
     }
 
     public Pedido(ArrayList<Producto> listProduct) {
         this.listProduct = listProduct;
     }
 
-    public Producto searchForId(Long id){
+    public Producto searchForId(Integer id){
         for(Producto pro : listProduct){
             if(pro.getId().equals(id)){
                 return pro;
@@ -25,11 +25,11 @@ public class Pedido {
         this.listProduct.add(product);
     }
 
-    public void deleteProductById(Long id){
+    public void deleteProductById(Integer id){
         this.listProduct.remove(searchForId(id));
     }
 
-    public String editProduct(Long id, String name, Double cost, Integer stock){
+    public String editProduct(Integer id, String name, Double cost, Integer stock){
         Producto pro = searchForId(id);
         pro.setName(name);
         pro.setCost(cost);
@@ -37,12 +37,10 @@ public class Pedido {
         return pro.toString();
     }
 
-    public String seeOrder(){
-        StringBuilder exit = new StringBuilder();
+    public void seeOrder(){
         for (Producto pro : listProduct){
-            exit.append(" // ").append(pro.toString());
+            pro.displayInfo();
         }
-        return exit.toString();
     }
 
     public ArrayList<Producto> getListProduct() {

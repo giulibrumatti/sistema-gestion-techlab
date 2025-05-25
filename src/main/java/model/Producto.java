@@ -1,29 +1,32 @@
 package model;
 
+import java.text.Normalizer;
+
 public class Producto {
-    private Long id;
+    private static Integer SIGUIENTE_ID = 1;
+    private Integer id;
     private String name;
 
     private Integer stock;
     private Double cost;
 
+    private Integer amountBuy;
+
     public Producto(){
 
     }
 
-    public Producto(Long id, String name, Double cost, Integer stock) {
-        this.id = id;
+    public Producto(String name, Double cost, Integer stock) {
         this.name = name;
         this.stock = stock;
         this. cost = cost;
+        this.amountBuy = 0;
+        this.id = SIGUIENTE_ID;
+        SIGUIENTE_ID++;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -55,12 +58,29 @@ public class Producto {
         this.cost = cost;
     }
 
-    @Override
-    public String toString() {
-        return "Producto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", stock=" + stock +
-                '}';
+    public Boolean containsName(String search){
+        String nameLowerCase = this.name.toLowerCase();
+        nameLowerCase = this.normalizeWord(nameLowerCase);
+        search = this.normalizeWord(search);
+        return nameLowerCase.contains(search.toLowerCase());
+    }
+
+    protected String normalizeWord(String word) {
+
+        String normalize = Normalizer.normalize(word, Normalizer.Form.NFD);
+
+        return normalize.replaceAll("\\p{M}", "");
+    }
+
+
+    public void displayInfo() {
+        System.out.println("#########################");
+        System.out.printf("""
+                Id: %s
+                Nombre: %s
+                Precio: %s
+                Stock: %s
+                """, this.id, this.name, this.cost, this.stock);
+        System.out.println("#########################");
     }
 }
